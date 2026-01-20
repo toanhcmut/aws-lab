@@ -1,0 +1,17 @@
+{
+  "mcpServers": {
+    "infracost-estimator": {
+      "command": "/home/stylvn/.local/bin/uv",
+      "args": [
+        "run",
+        "--with", "fastmcp",
+        "--directory", "/home/stylvn/Documents/aws-lab",
+        "/home/stylvn/Documents/aws-lab/.kiro/scripts/infracost-estimator/infracost.py"
+      ],
+      "env": {
+        "INFRACOST_API_KEY": "ico-z3GZZH2cCQs7oegBz0Ynde7fhrh87F1z"
+      },
+      "disabled": false
+    }
+  }
+}

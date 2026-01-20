@@ -3,232 +3,232 @@
 ## Phase 1: Foundation Setup
 
 ### 1.1 Project Structure and Configuration
-- [x] 1.1.1 Create Terraform project directory structure (terraform/, modules/)
+- [ ] 1.1.1 Create Terraform project directory structure (terraform/, modules/)
   - **Validates**: Requirements 7.1
   - **Details**: Create root terraform/ directory with subdirectories for modules (vpc, nlb, ecs, lambda, sqs, rds, elasticache, ec2, alb, cloudfront, waf, eventbridge, iam)
 
-- [x] 1.1.2 Create root Terraform configuration files (main.tf, variables.tf, outputs.tf, versions.tf)
+- [ ] 1.1.2 Create root Terraform configuration files (main.tf, variables.tf, outputs.tf, versions.tf)
   - **Validates**: Requirements 7.1, 7.2
   - **Details**: Define AWS provider version ~> 5.0, configure backend (S3 + DynamoDB for state locking), define common variables (project, app, env, region, vpc_cidr, availability_zones)
 
-- [x] 1.1.3 Create terraform.tfvars with project-specific values
+- [ ] 1.1.3 Create terraform.tfvars with project-specific values
   - **Validates**: Requirements 7.2
   - **Details**: Set project="tilt", app="sensor", env="lab", region="us-east-1", vpc_cidr="10.0.0.0/16", availability_zones=["us-east-1a", "us-east-1b"]
 
 ## Phase 2: Network Infrastructure
 
 ### 2.1 VPC Module
-- [x] 2.1.1 Create VPC module structure (modules/vpc/)
+- [ ] 2.1.1 Create VPC module structure (modules/vpc/)
   - **Validates**: Requirements 1.1, 1.2
   - **Details**: Create main.tf, variables.tf, outputs.tf in modules/vpc/
 
-- [x] 2.1.2 Implement VPC resources using terraform-aws-modules/vpc/aws
+- [ ] 2.1.2 Implement VPC resources using terraform-aws-modules/vpc/aws
   - **Validates**: Requirements 1.1
   - **Details**: Use official VPC module, configure VPC with CIDR 10.0.0.0/16, create 2 public subnets (10.0.1.0/24, 10.0.2.0/24) and 2 private subnets (10.0.10.0/24, 10.0.11.0/24) across 2 AZs
 
-- [x] 2.1.3 Implement Internet Gateway and route tables
+- [ ] 2.1.3 Implement Internet Gateway and route tables
   - **Validates**: Requirements 1.2
   - **Details**: Create IGW, public route table with 0.0.0.0/0 -> IGW route, private route table, associate subnets with appropriate route tables
 
 
-- [x] 2.1.4 Add VPC outputs (vpc_id, public_subnet_ids, private_subnet_ids)
+- [ ] 2.1.4 Add VPC outputs (vpc_id, public_subnet_ids, private_subnet_ids)
   - **Validates**: Requirements 7.3
   - **Details**: Export VPC ID, subnet IDs, route table IDs for use by other modules
 
-- [x] 2.1.5 Apply mandatory tags to all VPC resources
+- [ ] 2.1.5 Apply mandatory tags to all VPC resources
   - **Validates**: Terraform naming conventions
   - **Details**: Add tags: Project="TiltSensor", Environment="Lab", CreatedBy="Kiro-Intern", ManagedBy="Terraform"
 
 ## Phase 3: Security Layer
 
 ### 3.1 IAM Module
-- [x] 3.1.1 Create IAM module structure (modules/iam/)
+- [ ] 3.1.1 Create IAM module structure (modules/iam/)
   - **Validates**: Requirements 6.1
   - **Details**: Create main.tf, variables.tf, outputs.tf in modules/iam/
 
-- [x] 3.1.2 Create IAM role and policy for Lambda_Parsing
+- [ ] 3.1.2 Create IAM role and policy for Lambda_Parsing
   - **Validates**: Requirements 6.1
   - **Details**: Role: iam-role-tilt-sensor-lab-lambda-parsing, permissions: sqs:SendMessage on sqs-fifo-distributing, CloudWatch Logs, VPC networking (ec2:CreateNetworkInterface, ec2:DescribeNetworkInterfaces, ec2:DeleteNetworkInterface)
 
-- [x] 3.1.3 Create IAM role and policy for Lambda_Distributing
+- [ ] 3.1.3 Create IAM role and policy for Lambda_Distributing
   - **Validates**: Requirements 6.1
   - **Details**: Role: iam-role-tilt-sensor-lab-lambda-distributing, permissions: sqs:ReceiveMessage/DeleteMessage/GetQueueAttributes on sqs-fifo-distributing, sqs:SendMessage on sqs-db1, CloudWatch Logs
 
-- [x] 3.1.4 Create IAM role and policy for Lambda_DB1
+- [ ] 3.1.4 Create IAM role and policy for Lambda_DB1
   - **Validates**: Requirements 6.1
   - **Details**: Role: iam-role-tilt-sensor-lab-lambda-db1, permissions: sqs:ReceiveMessage/DeleteMessage/GetQueueAttributes on sqs-db1, rds-db:connect on Aurora, CloudWatch Logs, VPC networking
 
-- [x] 3.1.5 Create IAM role and policy for Lambda_Sync
+- [ ] 3.1.5 Create IAM role and policy for Lambda_Sync
   - **Validates**: Requirements 6.1
   - **Details**: Role: iam-role-tilt-sensor-lab-lambda-sync, permissions: rds-db:connect on Aurora, CloudWatch Logs, VPC networking
 
-- [x] 3.1.6 Create IAM roles for Command Handler Lambda functions
+- [ ] 3.1.6 Create IAM roles for Command Handler Lambda functions
   - **Validates**: Requirements 6.1
   - **Details**: Roles for mqtt-command-handler and lorawan-command-handler with permissions: sqs:ReceiveMessage/DeleteMessage on respective queues, CloudWatch Logs, VPC networking
 
-- [x] 3.1.7 Create IAM role for ECS tasks
+- [ ] 3.1.7 Create IAM role for ECS tasks
   - **Validates**: Requirements 6.1
   - **Details**: Role: iam-role-tilt-sensor-lab-ecs-task, permissions: ecr:GetAuthorizationToken, ecr:BatchCheckLayerAvailability, ecr:GetDownloadUrlForLayer, ecr:BatchGetImage, CloudWatch Logs
 
-- [x] 3.1.8 Create IAM role for EC2 instances (Portal API)
+- [ ] 3.1.8 Create IAM role for EC2 instances (Portal API)
   - **Validates**: Requirements 6.1
   - **Details**: Role: iam-role-tilt-sensor-lab-ec2-portal, permissions: sqs:SendMessage on command queues, CloudWatch Logs, SSM Session Manager
 
 ### 3.2 Security Groups
-- [x] 3.2.1 Create security group for NLB
+- [ ] 3.2.1 Create security group for NLB
   - **Validates**: Requirements 6.2
   - **Details**: SG: sg-tilt-sensor-lab-nlb, Ingress: TCP 1883 from 0.0.0.0/0, Egress: TCP 1883 to ECS Broker SG
 
-- [x] 3.2.2 Create security group for ECS Message Broker
+- [ ] 3.2.2 Create security group for ECS Message Broker
   - **Validates**: Requirements 6.2, 6.3
   - **Details**: SG: sg-tilt-sensor-lab-ecs-broker, Ingress: TCP 1883 from NLB SG, Lambda Parsing SG, Command Handler SGs, Egress: All (for container pulls)
 
-- [x] 3.2.3 Create security groups for Lambda functions
+- [ ] 3.2.3 Create security groups for Lambda functions
   - **Validates**: Requirements 6.2
   - **Details**: SGs for Lambda_Parsing, Lambda_DB1, Lambda_Sync, Command Handlers with appropriate egress rules to ECS, Aurora, Redis, SQS endpoints
 
-- [x] 3.2.4 Create security group for Aurora PostgreSQL
+- [ ] 3.2.4 Create security group for Aurora PostgreSQL
   - **Validates**: Requirements 6.2, 6.3
   - **Details**: SG: sg-tilt-sensor-lab-aurora, Ingress: TCP 5432 from Lambda_DB1 SG, Lambda_Sync SG, EC2 Portal SG, No egress
 
-- [x] 3.2.5 Create security group for ElastiCache Redis
+- [ ] 3.2.5 Create security group for ElastiCache Redis
   - **Validates**: Requirements 6.2, 6.3
   - **Details**: SG: sg-tilt-sensor-lab-redis, Ingress: TCP 6379 from Lambda_Sync SG, EC2 Portal SG, No egress
 
-- [x] 3.2.6 Create security group for ALB
+- [ ] 3.2.6 Create security group for ALB
   - **Validates**: Requirements 6.2
   - **Details**: SG: sg-tilt-sensor-lab-alb, Ingress: HTTPS 443 and HTTP 80 from CloudFront IP ranges, Egress: HTTP 80 to EC2 Portal SG
 
-- [x] 3.2.7 Create security group for EC2 Portal API
+- [ ] 3.2.7 Create security group for EC2 Portal API
   - **Validates**: Requirements 6.2
   - **Details**: SG: sg-tilt-sensor-lab-ec2-portal, Ingress: HTTP 80 from ALB SG, Egress: TCP 5432 to Aurora SG, TCP 6379 to Redis SG, HTTPS 443 to SQS endpoints
 
 ### 3.3 WAF Module
-- [x] 3.3.1 Create WAF module structure (modules/waf/)
+- [ ] 3.3.1 Create WAF module structure (modules/waf/)
   - **Validates**: Requirements 3.6
   - **Details**: Create main.tf, variables.tf, outputs.tf in modules/waf/
 
-- [x] 3.3.2 Implement WAF Web ACL with managed rules
+- [ ] 3.3.2 Implement WAF Web ACL with managed rules
   - **Validates**: Requirements 3.6
   - **Details**: Web ACL: waf-tilt-sensor-lab-portal, Rules: AWS Managed Core Rule Set, AWS Managed Known Bad Inputs, Rate-based rule (2000 req/5min), Custom SQL injection protection
 
 ## Phase 4: Storage Layer
 
 ### 4.1 RDS Module (Aurora PostgreSQL)
-- [x] 4.1.1 Create RDS module structure (modules/rds/)
+- [ ] 4.1.1 Create RDS module structure (modules/rds/)
   - **Validates**: Requirements 3.3
   - **Details**: Create main.tf, variables.tf, outputs.tf in modules/rds/
 
-- [x] 4.1.2 Implement Aurora PostgreSQL cluster using terraform-aws-modules/rds-aurora/aws
+- [ ] 4.1.2 Implement Aurora PostgreSQL cluster using terraform-aws-modules/rds-aurora/aws
   - **Validates**: Requirements 3.3
   - **Details**: Use official RDS Aurora module, cluster: rds-tilt-sensor-lab-aurora, engine: aurora-postgresql 15.4, serverless v2, min_capacity: 0.5 ACU, max_capacity: 2 ACU, multi-AZ, deployed in private subnets
 
-- [x] 4.1.3 Configure Aurora security settings
+- [ ] 4.1.3 Configure Aurora security settings
   - **Validates**: Requirements 3.3
   - **Details**: Enable encryption at rest (KMS), automated backups (7-day retention), associate with Aurora security group, create DB subnet group
 
-- [x] 4.1.4 Add Aurora outputs (cluster_endpoint, reader_endpoint)
+- [ ] 4.1.4 Add Aurora outputs (cluster_endpoint, reader_endpoint)
   - **Validates**: Requirements 7.3
   - **Details**: Export cluster endpoint, reader endpoint, cluster identifier
 
 ### 4.2 ElastiCache Module (Redis)
-- [x] 4.2.1 Create ElastiCache module structure (modules/elasticache/)
+- [ ] 4.2.1 Create ElastiCache module structure (modules/elasticache/)
   - **Validates**: Requirements 3.4
   - **Details**: Create main.tf, variables.tf, outputs.tf in modules/elasticache/
 
-- [x] 4.2.2 Implement Redis replication group
+- [ ] 4.2.2 Implement Redis replication group
   - **Validates**: Requirements 3.4
   - **Details**: Replication group: redis-tilt-sensor-lab, engine: redis 7.0, node_type: cache.t3.micro, 2 nodes, multi-AZ with automatic failover, deployed in private subnets
 
-- [x] 4.2.3 Configure Redis security settings
+- [ ] 4.2.3 Configure Redis security settings
   - **Validates**: Requirements 3.4
   - **Details**: Enable encryption in transit, associate with Redis security group, create subnet group
 
-- [x] 4.2.4 Add Redis outputs (primary_endpoint, reader_endpoint)
+- [ ] 4.2.4 Add Redis outputs (primary_endpoint, reader_endpoint)
   - **Validates**: Requirements 7.3
   - **Details**: Export primary endpoint, reader endpoint, replication group ID
 
 ## Phase 5: Messaging Layer
 
 ### 5.1 SQS Module
-- [x] 5.1.1 Create SQS module structure (modules/sqs/)
+- [ ] 5.1.1 Create SQS module structure (modules/sqs/)
   - **Validates**: Requirements 2.10, 2.13, 4.1
   - **Details**: Create main.tf, variables.tf, outputs.tf in modules/sqs/
 
-- [x] 5.1.2 Create SQS FIFO queue (sqs-fifo-distributing)
+- [ ] 5.1.2 Create SQS FIFO queue (sqs-fifo-distributing)
   - **Validates**: Requirements 2.10
   - **Details**: Queue: sqs-fifo-tilt-sensor-lab-distributing.fifo, FIFO enabled, content-based deduplication, visibility_timeout: 90s, message_retention: 4 days
 
-- [x] 5.1.3 Create SQS Standard queue (sqs-db1) with DLQ
+- [ ] 5.1.3 Create SQS Standard queue (sqs-db1) with DLQ
   - **Validates**: Requirements 2.13
   - **Details**: Queue: sqs-tilt-sensor-lab-db1, DLQ: sqs-tilt-sensor-lab-db1-dlq, visibility_timeout: 120s, message_retention: 4 days, max_receive_count: 3
 
-- [x] 5.1.4 Create SQS FIFO queues for commands
+- [ ] 5.1.4 Create SQS FIFO queues for commands
   - **Validates**: Requirements 4.1
   - **Details**: Queues: sqs-fifo-tilt-sensor-lab-mqtt-command.fifo, sqs-fifo-tilt-sensor-lab-lorawan-command.fifo, FIFO enabled, content-based deduplication
 
-- [x] 5.1.5 Add SQS outputs (queue URLs and ARNs)
+- [ ] 5.1.5 Add SQS outputs (queue URLs and ARNs)
   - **Validates**: Requirements 7.3
   - **Details**: Export URLs and ARNs for all queues
 
 ### 5.2 EventBridge Module
-- [x] 5.2.1 Create EventBridge module structure (modules/eventbridge/)
+- [ ] 5.2.1 Create EventBridge module structure (modules/eventbridge/)
   - **Validates**: Requirements 2.4, 5.2
   - **Details**: Create main.tf, variables.tf, outputs.tf in modules/eventbridge/
 
-- [x] 5.2.2 Create EventBridge rule for ingestion trigger
+- [ ] 5.2.2 Create EventBridge rule for ingestion trigger
   - **Validates**: Requirements 2.4, 2.5, 2.6
   - **Details**: Rule: eventbridge-tilt-sensor-lab-ingestion, schedule: rate(5 minutes), target: Lambda_Parsing, retry policy: 2 retries with exponential backoff
 
-- [x] 5.2.3 Create EventBridge rule for sync trigger
+- [ ] 5.2.3 Create EventBridge rule for sync trigger
   - **Validates**: Requirements 5.2
   - **Details**: Rule: eventbridge-tilt-sensor-lab-sync, schedule: rate(5 minutes), target: Lambda_Sync
 
-- [x] 5.2.4 Create Lambda permissions for EventBridge invocation
+- [ ] 5.2.4 Create Lambda permissions for EventBridge invocation
   - **Validates**: Requirements 2.6
   - **Details**: Allow EventBridge to invoke Lambda_Parsing and Lambda_Sync
 
 ## Phase 6: Compute Layer - ECS
 
 ### 6.1 ECS Module
-- [x] 6.1.1 Create ECS module structure (modules/ecs/)
+- [ ] 6.1.1 Create ECS module structure (modules/ecs/)
   - **Validates**: Requirements 2.2
   - **Details**: Create main.tf, variables.tf, outputs.tf in modules/ecs/
 
-- [x] 6.1.2 Create ECS cluster
+- [ ] 6.1.2 Create ECS cluster
   - **Validates**: Requirements 2.2
   - **Details**: Cluster: ecs-tilt-sensor-lab, enable Container Insights
 
-- [x] 6.1.3 Create ECS task definition for Message Broker
+- [ ] 6.1.3 Create ECS task definition for Message Broker
   - **Validates**: Requirements 2.2
   - **Details**: Task: ecs-task-tilt-sensor-lab-broker, Fargate, CPU: 512, Memory: 1024, container image: eclipse-mosquitto or equivalent MQTT broker, port: 1883
 
-- [x] 6.1.4 Create ECS service for Message Broker
+- [ ] 6.1.4 Create ECS service for Message Broker
   - **Validates**: Requirements 2.2, 2.3
   - **Details**: Service: ecs-service-tilt-sensor-lab-broker, desired_count: 2, deployed in private subnets, associate with ECS Broker security group, register with NLB target group
 
-- [x] 6.1.5 Configure ECS service auto-scaling
+- [ ] 6.1.5 Configure ECS service auto-scaling
   - **Validates**: Design scalability requirements
   - **Details**: Auto-scaling based on CPU/memory utilization, min: 2, max: 4
 
 ### 6.2 NLB Module
-- [x] 6.2.1 Create NLB module structure (modules/nlb/)
+- [ ] 6.2.1 Create NLB module structure (modules/nlb/)
   - **Validates**: Requirements 2.1, 2.3
   - **Details**: Create main.tf, variables.tf, outputs.tf in modules/nlb/
 
-- [x] 6.2.2 Create Network Load Balancer
+- [ ] 6.2.2 Create Network Load Balancer
   - **Validates**: Requirements 2.1
   - **Details**: NLB: nlb-tilt-sensor-lab-iot, type: network, deployed in public subnets, cross-zone load balancing enabled
 
-- [x] 6.2.3 Create NLB target group for ECS
+- [ ] 6.2.3 Create NLB target group for ECS
   - **Validates**: Requirements 2.3
   - **Details**: Target group: tg-tilt-sensor-lab-ecs-broker, target_type: ip, protocol: TCP, port: 1883, health check on port 1883
 
-- [x] 6.2.4 Create NLB listener
+- [ ] 6.2.4 Create NLB listener
   - **Validates**: Requirements 2.1, 2.3
   - **Details**: Listener: TCP port 1883, forward to ECS target group
 
-- [x] 6.2.5 Add NLB outputs (DNS name, ARN)
+- [ ] 6.2.5 Add NLB outputs (DNS name, ARN)
   - **Validates**: Requirements 7.3
   - **Details**: Export NLB DNS name for IoT device connections
 
@@ -355,40 +355,40 @@
 ## Phase 8: Application Layer
 
 ### 8.1 EC2 Module
-- [x] 8.1.1 Create EC2 module structure (modules/ec2/)
+- [ ] 8.1.1 Create EC2 module structure (modules/ec2/)
   - **Validates**: Requirements 3.1
   - **Details**: Create main.tf, variables.tf, outputs.tf in modules/ec2/
 
-- [x] 8.1.2 Create EC2 launch template for Portal API
+- [ ] 8.1.2 Create EC2 launch template for Portal API
   - **Validates**: Requirements 3.1
   - **Details**: Launch template: lt-tilt-sensor-lab-portal, instance_type: t3.medium, AMI: Amazon Linux 2023, user_data script to install Node.js/Python API, associate with EC2 Portal security group and IAM role
 
-- [x] 8.1.3 Create Auto Scaling Group for Portal API
+- [ ] 8.1.3 Create Auto Scaling Group for Portal API
   - **Validates**: Requirements 3.1
   - **Details**: ASG: asg-tilt-sensor-lab-portal, min: 2, max: 4, desired: 2, deployed in private subnets, health check type: ELB
 
-- [x] 8.1.4 Configure Auto Scaling policies
+- [ ] 8.1.4 Configure Auto Scaling policies
   - **Validates**: Design scalability requirements
   - **Details**: Target tracking scaling based on CPU utilization (70% target)
 
 ### 8.2 ALB Module
-- [x] 8.2.1 Create ALB module structure (modules/alb/)
+- [ ] 8.2.1 Create ALB module structure (modules/alb/)
   - **Validates**: Requirements 3.2
   - **Details**: Create main.tf, variables.tf, outputs.tf in modules/alb/
 
-- [x] 8.2.2 Create Application Load Balancer
+- [ ] 8.2.2 Create Application Load Balancer
   - **Validates**: Requirements 3.2
   - **Details**: ALB: alb-tilt-sensor-lab-portal, type: application, deployed in public subnets, enable HTTP/2, idle_timeout: 60s
 
-- [x] 8.2.3 Create ALB target group for EC2
+- [ ] 8.2.3 Create ALB target group for EC2
   - **Validates**: Requirements 3.2
   - **Details**: Target group: tg-tilt-sensor-lab-portal, target_type: instance, protocol: HTTP, port: 80, health check on /health endpoint, sticky sessions enabled
 
-- [x] 8.2.4 Create ALB listeners (HTTP and HTTPS)
+- [ ] 8.2.4 Create ALB listeners (HTTP and HTTPS)
   - **Validates**: Requirements 3.2
   - **Details**: HTTP listener (port 80): redirect to HTTPS, HTTPS listener (port 443): forward to EC2 target group, SSL certificate from ACM
 
-- [x] 8.2.5 Add ALB outputs (DNS name, ARN)
+- [ ] 8.2.5 Add ALB outputs (DNS name, ARN)
   - **Validates**: Requirements 7.3
   - **Details**: Export ALB DNS name for CloudFront origin
 

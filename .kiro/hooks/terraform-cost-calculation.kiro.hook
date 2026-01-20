@@ -1,0 +1,16 @@
+{
+  "enabled": true,
+  "name": "Terraform Cost Calculator",
+  "description": "Triggers cost calculation using infracost-mcp MCP server when Terraform module files are edited and changes are done",
+  "version": "1",
+  "when": {
+    "type": "userMessage",
+    "patterns": ["tính tiền", "cost", "price", "giá", "estimate"]
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Use the tool 'get_terraform_cost_estimate' from 'infracost-estimator' server to calculate costs for this directory. Do NOT run terminal commands directly."
+  },
+  "workspaceFolderName": "aws-lab",
+  "shortName": "terraform-cost-calculation"
+}
