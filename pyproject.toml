@@ -1,0 +1,16 @@
+[project]
+name = "infracost-mcp"
+version = "0.1.0"
+description = "MCP server for Infracost CLI cost estimation"
+requires-python = ">=3.10"
+dependencies = [
+    "fastmcp>=2.14.3",
+    "mcp>=1.0.0",
+]
+
+[project.scripts]
+infracost-mcp = "infracost_mcp:main"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"

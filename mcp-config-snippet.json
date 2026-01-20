@@ -1,0 +1,15 @@
+{
+    "infracost": {
+        "command": "/home/tqtcse/.local/bin/uvx",
+        "args": [
+            "--from",
+            "/home/tqtcse/kiro-lab",
+            "infracost-mcp"
+        ],
+        "env": {},
+        "disabled": false,
+        "autoApprove": [
+            "get_terraform_cost_estimate"
+        ]
+    }
+}
