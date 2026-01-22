@@ -1,0 +1,17 @@
+{
+    "mcpServers": {
+        "infracost-estimator": {
+            "command": "/home/tqtcse/.local/bin/uv",
+            "args": [
+                "run",
+                "--with",
+                "fastmcp",
+                "/home/tqtcse/kiro-demo/local-mcp-server/infracost_mcp.py"
+            ],
+            "env": {
+                "INFRACOST_API_KEY": "ico-z3GZZH2cCQs7oegBz0Ynde7fhrh87F1z"
+            },
+            "disabled": false
+        }
+    }
+}

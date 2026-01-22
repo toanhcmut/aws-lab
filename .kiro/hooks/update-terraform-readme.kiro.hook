@@ -1,0 +1,15 @@
+{
+  "enabled": true,
+  "name": "Auto Update Terraform README",
+  "description": "Automatically updates the terraform project README file when Kiro agent completes its work",
+  "version": "1",
+  "when": {
+    "type": "agentStop"
+  },
+  "then": {
+    "type": "askAgent",
+    "prompt": "Review all terraform files in spec-hooks-steering-mcp/terraform/ directory and update the README.md file to reflect the current infrastructure configuration, including all resources, variables, and outputs. Ensure the documentation is accurate and up-to-date."
+  },
+  "workspaceFolderName": "kiro-demo",
+  "shortName": "update-terraform-readme"
+}

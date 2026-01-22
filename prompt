@@ -1,0 +1,9 @@
+Generate Terraform code for a standard 3-tier AWS architecture with High Availability. The infrastructure should include:
+
+A VPC across 3 Availability Zones with Public and Private subnets.
+
+An Application Load Balancer (ALB) facing the public internet.
+
+An Auto Scaling Group for EC2 instances in the public subnets.
+
+A Multi-AZ RDS database (Primary + Standby) in the private subnets.

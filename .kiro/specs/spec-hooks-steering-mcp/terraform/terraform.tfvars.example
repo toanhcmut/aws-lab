@@ -1,0 +1,46 @@
+# Project Configuration
+project_name = "tilt"
+app_name     = "sensor"
+environment  = "lab"
+created_by   = "Toan-Tran"
+
+# VPC Configuration
+vpc_cidr = "10.0.0.0/16"
+
+# Availability Zones (leave empty for automatic selection of first 3 AZs)
+# availability_zones = ["us-east-1a", "us-east-1b", "us-east-1c"]
+availability_zones = []
+
+# EC2 Configuration
+instance_type = "t3.micro"
+ami_id        = "ami-0c55b159cbfafe1f0"  # Replace with your AMI ID for your region
+
+# Auto Scaling Configuration
+asg_min_size         = 3
+asg_max_size         = 9
+asg_desired_capacity = 3
+
+# ALB Health Check Configuration
+alb_health_check_path      = "/"
+alb_health_check_interval  = 30
+alb_health_check_timeout   = 5
+alb_healthy_threshold      = 2
+alb_unhealthy_threshold    = 2
+
+# RDS Configuration
+db_engine                   = "mysql"
+db_engine_version           = "8.0"
+db_instance_class           = "db.t3.micro"
+db_name                     = "myappdb"
+db_username                 = "admin"
+db_password                 = "ChangeMe123!"  # Use a secure password - DO NOT commit this file
+db_allocated_storage        = 20
+db_backup_retention_period  = 7
+db_skip_final_snapshot      = true  # Set to false for production
+
+# Notes:
+# - Replace ami_id with a valid AMI for your region
+# - Use a strong password for db_password
+# - Never commit terraform.tfvars with sensitive data to version control
+# - Consider using AWS Secrets Manager or Parameter Store for db_password
+# - For production, set db_skip_final_snapshot = false
